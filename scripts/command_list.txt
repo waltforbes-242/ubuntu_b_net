@@ -1,13 +1,25 @@
-	1. List Images: docker images
-	2. Run nginx (pre-check): docker run --name custom_nginx_v1_0 -d -p 8080:80 custom_nginx:v1.0
+	1. Build Image: docker build -t ubuntu_b_net:v2 -f net_dockerfile_v2 .
+	2. Tag Image for ACR: docker tag ubuntu_b_net:v2 cnk8sstudies-guf7d4fafabxehdy.azurecr.io/nwapps/ubuntu_b_net:v2
 	3. Login to Azure: az login
 	4. Login to Container Registry: az acr login --name cnk8sstudies
-	5. Tag Image Incorrectly (to remove tag later): docker tag ubuntu_b_net:v1.0 cnk8sstudies-guf7d4fafabxehdy.azurecr.io/webapps/ubuntu_b_net:v1.0
-	6. Verify: docker images
-	7. Remove Incorrect Tag: docker rmi cnk8sstudies-guf7d4fafabxehdy.azurecr.io/webapps/ubuntu_b_net:v1.0
-	8. Verify: docker images
-	9. Apply Correct Tag: docker tag custom_nginx:v1.0 cnk8sstudies-guf7d4fafabxehdy.azurecr.io/webapps/custom_nginx:v1.0
-	10. Verify: docker images
-	11. Upload/PUSH Image to Azure Container Repository: docker push cnk8sstudies-guf7d4fafabxehdy.azurecr.io/webapps/custom_nginx:v1.0
-	12. View New Repository: az acr repository list --name cnk8sstudies --output table
-	13. View Tags on Repository: az acr repository show-tags --name cnk8sstudies --repository webapps/custom_nginx --output table
+	5. Push Tagged Image to ACR: docker push cnk8sstudies-guf7d4fafabxehdy.azurecr.io/nwapps/ubuntu_b_net:v2
+	6. Verify by Listing Repos in ACR (v1): az acr repository list --name cnk8sstudies
+	7. Verify by Listing Repos in ACR (v2): az acr repository list --name cnk8sstudies --output tsv
+	8. Verify by Listing Tags in Specific Repo: az acr repository show-tags --name cnk8sstudies --repository nwapps/ubuntu_b_net  --output table
+	9. CREATING CONTAINER FROM CLI
+		a. Create a managed identity: portal search "managed identities" > Create...
+		b. Assign the Acrpull role to the managed identity for the ACR (container registry), cnk8sstudies:  search+select "Container registries" > reg's IAM > Add…
+		c. Get resource ID of the managed identity:
+			"az identity show --resource-group csrg --name aci-container-acrpull --query id -o tsv"
+				Note: aci-container-acrpull is the user-created managed identity.
+		d. Create container-group with this command form:
+			"az container create --resource-group csrg --name ubuntu-b-net-2b --image cnk8sstudies-guf7d4fafabxehdy.azurecr.io/nwapps/ubuntu_b_net:v2 --assign-identity <IDENTITY_RESOURCE_ID> --acr-identity <IDENTITY_RESOURCE_ID> --ip-address Public --os-type Linux"
+				Note 1: actual command contains private info and is in my 242 OneNote notes
+				Note 2: A running container instance is created (do you want to stop it?)
+		e. Check container-group status:
+			BRIEF: "az container show --resource-group csrg --name ubuntu-b-net-2b --query instanceView.state --output table"
+			DETAILED: "az container show --resource-group csrg --name ubuntu-b-net-2 --output table"
+		f. Stop the Container-Group:
+			"az container stop --resource-group csrg --name ubuntu-b-net-2b"
+	10. Start the Container-Group: az container start --resource-group csrg --name ubuntu-b-net-2b
+	10. Check Status of Container-Group (brief): az container show --resource-group csrg --name ubuntu-b-net-2 --query instanceView.state --output table
