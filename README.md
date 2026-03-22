@@ -1,12 +1,12 @@
-# custom-nginx
-Custom web server based on nginx
+# ubuntu-b-net
+Ubuntu wuth network tools installed (apt-get install -y iproute2 net-tools iputils-ping dnsutils)
 
 Container image workflow for pushing a local Docker image to Azure Container Registry (ACR) and LATER deploying it to Azure Container Instance (ACI) and Azure Kubernetes Service (AKS).
 
 ## Image
-- Original local image: `custom_nginx:v1.0`
+- Original local image: `ubuntu_b_net:v2.0`
 - ACR login server: `cnk8sstudies-guf7d4fafabxehdy.azurecr.io`
-- ACR image path: `cnk8sstudies-guf7d4fafabxehdy.azurecr.io/webapps/custom_nginx:v1.0`
+- ACR image path: `cnk8sstudies-guf7d4fafabxehdy.azurecr.io/nwapps/ubuntu_b_net:v2.0`
 
 ## Image flow
 1. Build or obtain the local image.
@@ -17,5 +17,5 @@ Container image workflow for pushing a local Docker image to Azure Container Reg
 
 ## Push commands
 ```bash
-docker tag custom_nginx:v1.0 cnk8sstudies-guf7d4fafabxehdy.azurecr.io/webapps/custom_nginx:v1.0
-docker push cnk8sstudies-guf7d4fafabxehdy.azurecr.io/webapps/custom_nginx:v1.0
+docker tag ubuntu_b_net:v2.0 cnk8sstudies-guf7d4fafabxehdy.azurecr.io/nwapps/ubuntu_b_net:v2.0
+docker push cnk8sstudies-guf7d4fafabxehdy.azurecr.io/nwapps/ubuntu_b_net:v2.0
