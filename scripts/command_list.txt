@@ -1,0 +1,13 @@
+	1. List Images: docker images
+	2. Run nginx (pre-check): docker run --name custom_nginx_v1_0 -d -p 8080:80 custom_nginx:v1.0
+	3. Login to Azure: az login
+	4. Login to Container Registry: az acr login --name cnk8sstudies
+	5. Tag Image Incorrectly (to remove tag later): docker tag ubuntu_b_net:v1.0 cnk8sstudies-guf7d4fafabxehdy.azurecr.io/webapps/ubuntu_b_net:v1.0
+	6. Verify: docker images
+	7. Remove Incorrect Tag: docker rmi cnk8sstudies-guf7d4fafabxehdy.azurecr.io/webapps/ubuntu_b_net:v1.0
+	8. Verify: docker images
+	9. Apply Correct Tag: docker tag custom_nginx:v1.0 cnk8sstudies-guf7d4fafabxehdy.azurecr.io/webapps/custom_nginx:v1.0
+	10. Verify: docker images
+	11. Upload/PUSH Image to Azure Container Repository: docker push cnk8sstudies-guf7d4fafabxehdy.azurecr.io/webapps/custom_nginx:v1.0
+	12. View New Repository: az acr repository list --name cnk8sstudies --output table
+	13. View Tags on Repository: az acr repository show-tags --name cnk8sstudies --repository webapps/custom_nginx --output table

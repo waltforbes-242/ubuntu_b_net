@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: custom-nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: custom-nginx
+  template:
+    metadata:
+      labels:
+        app: custom-nginx
+    spec:
+      containers:
+        - name: custom-nginx
+          image: cnk8sstudies-guf7d4fafabxehdy.azurecr.io/webapps/custom-nginx:v1.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80

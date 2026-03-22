@@ -1,0 +1,7 @@
+# APPLY YAMLs:
+kubectl apply -f k8s/deployment.yaml
+kubectl apply -f k8s/service.yaml
+--
+# CHECK STATUS
+kubectl get pods
+kubectl get services
